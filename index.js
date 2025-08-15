@@ -6,9 +6,21 @@ import { runFastMonteCarlo } from "./montecarlo.js";
 const app = express();
 
 // Enable CORS for all origins (or restrict to your frontend)
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://pusoy-backend-1.onrender.com",
+  "https://dondonmoneyprinter.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
   })
 );
 
